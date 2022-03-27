@@ -1,0 +1,10 @@
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+
+  .navItems {
+    display: flex;
+    gap: 24px;
+  }
+}
