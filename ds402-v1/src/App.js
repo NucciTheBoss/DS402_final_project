@@ -12,7 +12,7 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/" component={LandingPage}></Route>
-          <Route path="algoOne" component={AlgoOne}></Route>
+          <Route path="/algoOne" component={AlgoOne}></Route>
         </Switch>
       </Router>
     </div>

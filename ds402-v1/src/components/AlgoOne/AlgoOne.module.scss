@@ -1,0 +1,24 @@
+.toolBar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .buttonContainer {
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .member {
+    display: flex;
+    gap: 12px;
+  }
+
+  .headerContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 12px;
+  }
+}
