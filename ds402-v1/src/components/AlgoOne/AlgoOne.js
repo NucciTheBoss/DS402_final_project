@@ -28,6 +28,15 @@ export const AlgoOne = () => {
     setMembers(membersTemp);
   };
 
+  const handlePreferenceChange = (index, newPreferences) => {
+    const membersTemp = [...members];
+    membersTemp[index] = {
+      name: members[index].name,
+      preferences: newPreferences,
+    };
+    setMembers(membersTemp);
+  };
+
   const handleSubmit = () => {
     console.log(members);
   };
@@ -52,7 +61,12 @@ export const AlgoOne = () => {
                   className={styles.nameField}
                   onInput={(name) => handleNameChange(index, name.target.value)}
                 />
-                <TextField />
+                <TextField
+                  className={styles.preferencesField}
+                  onInput={(preferences) =>
+                    handlePreferenceChange(index, preferences.target.value)
+                  }
+                />
                 <Button
                   variant="contained"
                   color="error"
