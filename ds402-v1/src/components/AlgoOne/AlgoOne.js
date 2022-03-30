@@ -19,6 +19,19 @@ export const AlgoOne = () => {
     }
   };
 
+  const handleNameChange = (index, newName) => {
+    const membersTemp = [...members];
+    membersTemp[index] = {
+      name: newName,
+      preferences: members[index].preferences,
+    };
+    setMembers(membersTemp);
+  };
+
+  const handleSubmit = () => {
+    console.log(members);
+  };
+
   return (
     <div>
       <div className={styles.toolBar}>
@@ -35,7 +48,10 @@ export const AlgoOne = () => {
           <div className={styles.members}>
             {members.map((member, index) => (
               <div key={index} className={styles.member}>
-                <TextField />
+                <TextField
+                  className={styles.nameField}
+                  onInput={(name) => handleNameChange(index, name.target.value)}
+                />
                 <TextField />
                 <Button
                   variant="contained"
@@ -50,7 +66,9 @@ export const AlgoOne = () => {
         </div>
       </div>
       <div className={styles.submitButtonContainer}>
-        <Button variant="contained">Submit</Button>
+        <Button onClick={() => handleSubmit()} variant="contained">
+          Submit
+        </Button>
       </div>
     </div>
   );
