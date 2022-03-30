@@ -49,6 +49,9 @@ export const AlgoOne = () => {
           </div>
         </div>
       </div>
+      <div className={styles.submitButtonContainer}>
+        <Button variant="contained">Submit</Button>
+      </div>
     </div>
   );
 };
