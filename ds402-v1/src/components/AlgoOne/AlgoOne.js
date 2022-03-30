@@ -12,9 +12,11 @@ export const AlgoOne = () => {
   };
 
   const handleRemoveClicked = (index) => {
-    const membersTemp = [...members];
-    membersTemp.splice(index, 1);
-    setMembers(membersTemp);
+    if (members.length > 1) {
+      const membersTemp = [...members];
+      membersTemp.splice(index, 1);
+      setMembers(membersTemp);
+    }
   };
 
   return (
