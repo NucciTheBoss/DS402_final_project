@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import Button from "@mui/material/Button";
 import styles from "./AlgoOne.module.scss";
 import TextField from "@mui/material/TextField";
 
@@ -29,6 +30,9 @@ export const AlgoOne = () => {
               <div key={index} className={styles.member}>
                 <TextField />
                 <TextField />
+                <Button variant="contained" color="error">
+                  Remove
+                </Button>
               </div>
             ))}
           </div>

@@ -9,16 +9,25 @@
     align-items: center;
     gap: 18px;
   }
+  .memberContainer {
+    padding-left: 54px;
+  }
 
   .member {
     display: flex;
     gap: 12px;
   }
 
+  .members {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
   .headerContainer {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    gap: 12px;
+    width: 401px;
   }
 }
