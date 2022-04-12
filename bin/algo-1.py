@@ -97,7 +97,7 @@ def hopcroft_karp(X,Y,e):
     # print(cleaned_m)
     return cleaned_m
 
-hopcroft_karp(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]))
+# hopcroft_karp(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]))
 
 def algorithm_one(X, Y, e):
     """_summary_
@@ -115,20 +115,71 @@ def algorithm_one(X, Y, e):
     for x in X:
         if x not in [m[0] for m in max_card_matching]:
             x_not.append(x)
-
+    
     # compute maximal M-alternating sequence S(max_card_matching, x_not)
+    # can be more than one vertice in x_not, so for loop through it; 
+    # also can be empty if all x vertices are matched
+    if len(x_not) == 0:
+        # then none of the vertices participate in the set as they are all matched
+        x_l, y_l, x_s, y_s = X, Y, [], [] 
+        
+        return dict({"x_l":x_l, "x_s":x_s, "y_l":y_l, "y_s":y_s})
+        
+    # else:
+    #     # compute maximal alternating sequence
+        
+    #             # seq = str(seq + y[])
+        
+
+print(algorithm_one(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]])))
     
 
-    return None
-    
+# alternating_sequences = []
+# for x_vert in x_not:
+#     # start building the sequence
+#     seq = x_vert
+#     y_connections = e[:, X.index(x_vert)]
+#     # find the connections to y 
+#     for y in y_connections:
+#         print(y_connections)
 
 
+def maximal_alternating_sequence(X, Y, e, vert_list, sequences=[], counter=0):
+    """_summary_
 
-
-
-
-
-
+    Args:
+        X (list): x components of bipartite graph (G)
+        Y (list): y components of bipartite graph (G)
+        e (np.array): set of matchings (matching is a set of edges without common vertices)
+        vert_dict (list): 
+    Returns:
+        _type_: _description_
+    """
+    x_l, y_l = [], []
+    if vert_list[0] in X:
+        set_checking = "Y"
+    else:
+        set_checking = "X"
+    for vert in vert_list:
+        # find the matchings in e
+        if set_checking == "Y":
+            y_connections = e[:, X.index(vert)]
+            # build connection to x
+            if counter == 0:
+                sequences.append([str(vert + "-" + v) for v in [Y[i] for i in list(locate(y_connections))]])
+                counter += 1
+            else:
+                # add connections to corresponding sequences already in sequences
+                ph = ""
+            
+        else:
+            x_connections = e[Y.index(vert)]
+            if counter == 0:
+                sequences.append([str(vert + "-" + v) for v in [Y[i] for i in list(locate(x_connections))]])
+                counter += 1
+            else:
+                # add connections to corresponding sequences already in sequences
+                ph = ""
 
 """
     copy_dict = e
