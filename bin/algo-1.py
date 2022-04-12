@@ -97,7 +97,9 @@ def hopcroft_karp(X,Y,e):
     # print(cleaned_m)
     return cleaned_m
 
-# hopcroft_karp(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]))
+print(hopcroft_karp(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]])))
+
+
 
 def algorithm_one(X, Y, e):
     """_summary_
@@ -131,7 +133,7 @@ def algorithm_one(X, Y, e):
     #             # seq = str(seq + y[])
         
 
-print(algorithm_one(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]])))
+# print(algorithm_one(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]])))
     
 
 # alternating_sequences = []
@@ -144,7 +146,7 @@ print(algorithm_one(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [
 #         print(y_connections)
 
 
-def maximal_alternating_sequence(X, Y, e, vert_list, sequences=[], counter=0):
+def maximal_alternating_sequence(X, Y, e, matchings, e_without_matchings=None, vert_list= None, sequences=[]):
     """_summary_
 
     Args:
@@ -155,82 +157,43 @@ def maximal_alternating_sequence(X, Y, e, vert_list, sequences=[], counter=0):
     Returns:
         _type_: _description_
     """
-    x_l, y_l = [], []
-    if vert_list[0] in X:
-        set_checking = "Y"
-    else:
-        set_checking = "X"
-    for vert in vert_list:
-        # find the matchings in e
-        if set_checking == "Y":
-            y_connections = e[:, X.index(vert)]
-            # build connection to x
-            if counter == 0:
-                sequences.append([str(vert + "-" + v) for v in [Y[i] for i in list(locate(y_connections))]])
-                counter += 1
-            else:
-                # add connections to corresponding sequences already in sequences
-                ph = ""
-            
-        else:
-            x_connections = e[Y.index(vert)]
-            if counter == 0:
-                sequences.append([str(vert + "-" + v) for v in [Y[i] for i in list(locate(x_connections))]])
-                counter += 1
-            else:
-                # add connections to corresponding sequences already in sequences
-                ph = ""
-
-"""
-    copy_dict = e
-    M = [] # initialize matchings to be null
-    boolean = True
-    # while boolean: 
-    matched_vertices_x = []
-    matched_vertices_y = []
-    free_vertices = []
-    P = []
-    # Using BFS, build alternating level graph, rooted at unmatched vertices in set X
-    # for x in X: 
-    #     # find all matchings that each x in X has within e
-    #     if x not in matched_vertices_x:
-    #         edges = e.get(x)
-    #         # print(edges)
-    #         for _ in edges: 
-    #             if _ not in free_vertices:
-    #             # and _ not in matched_vertices_y:
-    #                 free_vertices.append(_)
+    e_without_mathcings = copy.deepcopy(e)
+    for match in matchings:
+        # find indices need to remove these edges in e 
+        x_index = X.index(match[0])
+        y_index = Y.index(match[1])
+        e_without_mathcings[y_index, x_index] = 0
     
-    free_vertices = list(np.unique([i for i in list(itertools.chain(*copy_dict.values()))]))
-    for y_vertex in free_vertices:  
-        x_vertex = [i for i,j in copy_dict.items() if y_vertex in j]
-        if x_vertex != [] and x_vertex not in matched_vertices_x:
-            copy_dict.pop(x_vertex[0])   
-            free_vertices.remove(y_vertex)
-            # matching = str(x_vertex[0]+ "-"+y_vertex)
-            # print(x_vertex, matching)
-             
-            matched_vertices_x.append(x_vertex[0])
-            matched_vertices_y.append(y_vertex)
-            
-            matching = str(x_vertex[0]+ "-"+y_vertex)
-            P.append(matching)
-    #         # remove all connections to y_vertex 
-    #         for key in copy_dict.keys():
-    #             print(key)
-    #             print([y for y in copy_dict[key] if y not in matched_vertices_y])
-    print(copy_dict)
-    print(P)
-    # print(copy_dict)               
-    # print(P)
-    #     # print(P)
-    #     # M = set(M) ^ set(P)
-    #     # print(M)
-    #     # if len(free_vertices) == 0:
-    #     #     boolean = False
-    #     # else:
-    #     #     boolean = True
-        
+    # build sets, start with Y_i given X_0
 
-    # return M
-"""
+
+# maximal_alternating_sequence(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]), matchings=['CF', 'BE', 'AH', 'DG'])
+
+
+
+
+# x_l, y_l = [], []
+# if vert_list[0] in X:
+#     set_checking = "Y"
+# else:
+#     set_checking = "X"
+# for vert in vert_list:
+#     # find the matchings in e
+#     if set_checking == "Y":
+#         y_connections = e[:, X.index(vert)]
+#         # build connection to x
+#         if counter == 0:
+#             sequences.append([str(vert + "-" + v) for v in [Y[i] for i in list(locate(y_connections))]])
+#             counter += 1
+#         else:
+#             # add connections to corresponding sequences already in sequences
+#             ph = ""
+        
+#     else:
+#         x_connections = e[Y.index(vert)]
+#         if counter == 0:
+#             sequences.append([str(vert + "-" + v) for v in [Y[i] for i in list(locate(x_connections))]])
+#             counter += 1
+#         else:
+#             # add connections to corresponding sequences already in sequences
+#             ph = ""
