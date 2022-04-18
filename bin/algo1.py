@@ -1,6 +1,3 @@
-
-
-
 # links 
 # https://www.youtube.com/watch?v=lM5eIpF0xjA
 # https://www.youtube.com/watch?v=CSUEVu-qUgM
@@ -11,6 +8,17 @@ import numpy as np
 import copy
 import itertools
 from more_itertools import locate 
+import time
+
+def run_with_time(func):
+    def wf(*args, **kwargs):
+        stime = time.time()
+        result = func(*args, **kwargs)
+        etime = time.time()
+
+        print(f"Function {func.__name__!r} executed in {etime - stime}s" )
+        return result 
+    return wf
 
 def hopcroft_karp(X,Y,e):
     """_summary_
@@ -22,7 +30,7 @@ def hopcroft_karp(X,Y,e):
 
     Returns:
         M (list): list of maximum cardinality matching found
-    """ 
+    """
     num_x_vertices = len(X)
     num_y_vertices = len(Y)
 
@@ -100,9 +108,6 @@ def hopcroft_karp(X,Y,e):
 # print(hopcroft_karp(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]])))
 
 
-
-
-
 def maximal_alternating_sequence(X, Y, e, matchings, verts_to_check, sequences=[]):
     """_summary_
 
@@ -162,7 +167,9 @@ def maximal_alternating_sequence(X, Y, e, matchings, verts_to_check, sequences=[
 
 # maximal_alternating_sequence(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]), matchings=['CF', 'BE', 'AH', 'DG']
 
+@run_with_time
 def algorithm_one(X, Y, e):
+    
     """_summary_
 
     Args:
@@ -196,4 +203,10 @@ def algorithm_one(X, Y, e):
         x_l, y_l, x_s, y_s = [i for i in X if i not in mas], [j for j in Y if j not in mas], [q for q in X if q in mas], [z for z in Y if z in mas]
         return dict({"x_l":x_l, "x_s":x_s, "y_l":y_l, "y_s":y_s})        
 
-# print(algorithm_one(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]])))
+print(algorithm_one(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]])))
+# example one: (['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]))
+# example twp: (['A','B','C','D','E','F','G','H'], ['Z','Y','X','W','V','U','T'],
+#                  np.array([1,0,1,0,1,0,0,0], [0,1,0,1,0,1,0,0], [0,1,0,0,1,1,1,0], 
+#                           [0,0,1,1,1,1,0,1], [0,0,0,0,0,0,1,0], [0,0,0,0,0,0,0,1], 
+#                           [0,0,0,0,0,0,0,1])
+
