@@ -4,21 +4,12 @@
 # https://www.youtube.com/watch?v=0GNYjXUPTFM
 # 
 
+
 import numpy as np
 import copy
 import itertools
 from more_itertools import locate 
-import time
-
-def run_with_time(func):
-    def wf(*args, **kwargs):
-        stime = time.time()
-        result = func(*args, **kwargs)
-        etime = time.time()
-
-        print(f"Function {func.__name__!r} executed in {etime - stime}s" )
-        return result 
-    return wf
+from utils import run_with_time
 
 def hopcroft_karp(X,Y,e):
     """_summary_
@@ -169,7 +160,9 @@ def maximal_alternating_sequence(X, Y, e, matchings, verts_to_check, sequences=[
 
 @run_with_time
 def algorithm_one(X, Y, e):
-    
+    n_for_tc = min(len(X), len(Y))
+    m_for_tc = np.count_nonzero(e == 1)
+
     """_summary_
 
     Args:
@@ -183,6 +176,7 @@ def algorithm_one(X, Y, e):
     """
     x_not = []
     max_card_matching = hopcroft_karp(X,Y,e)
+    # print("MCM:", max_card_matching)
     for x in X:
         if x not in [m[0] for m in max_card_matching]:
             x_not.append(x)
@@ -194,18 +188,18 @@ def algorithm_one(X, Y, e):
         # then none of the vertices participate in the set as they are all matched
         x_l, y_l, x_s, y_s = X, Y, [], [] 
         
-        return dict({"x_l":x_l, "x_s":x_s, "y_l":y_l, "y_s":y_s})
+        return dict({"x_l":x_l, "x_s":x_s, "y_l":y_l, "y_s":y_s}), n_for_tc, m_for_tc, "Algorithm One", "Example One"
         
     else:
         # compute maximal alternating sequence
         mas = maximal_alternating_sequence(X, Y, e, matchings=max_card_matching, verts_to_check=x_not)
 
         x_l, y_l, x_s, y_s = [i for i in X if i not in mas], [j for j in Y if j not in mas], [q for q in X if q in mas], [z for z in Y if z in mas]
-        return dict({"x_l":x_l, "x_s":x_s, "y_l":y_l, "y_s":y_s})        
+        return dict({"x_l":x_l, "x_s":x_s, "y_l":y_l, "y_s":y_s}), n_for_tc, m_for_tc, "Algorithm One", "Example One"   
 
 print(algorithm_one(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]])))
 # example one: (['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]))
-# example twp: (['A','B','C','D','E','F','G','H'], ['Z','Y','X','W','V','U','T'],
+# example two: (['A','B','C','D','E','F','G','H'], ['Z','Y','X','W','V','U','T'],
 #                  np.array([1,0,1,0,1,0,0,0], [0,1,0,1,0,1,0,0], [0,1,0,0,1,1,1,0], 
 #                           [0,0,1,1,1,1,0,1], [0,0,0,0,0,0,1,0], [0,0,0,0,0,0,0,1], 
 #                           [0,0,0,0,0,0,0,1])
