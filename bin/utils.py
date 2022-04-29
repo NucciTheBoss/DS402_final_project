@@ -1,19 +1,26 @@
 import pandas as pd
 import time
 from datetime import datetime
-import 
+import seaborn as sns
 
 
+# pulls from a dictionary? that contains each functions time complexity and adds 
+# it together at the end to return its actual time complexity
 def run_with_time(func):
     def wf(*args, **kwargs):
-        stime = time.time()
-        result, n, m, algorithm_name, example_name = func(*args, **kwargs) # may need to adjust this to handle the differing for each variables time complexity
-        etime = time.time()
-        # send data to function to save runtime results 
-        runtime_df = add_to_csv(file="runtime.csv", additions=[algorithm_name, example_name, n, m, etime-stime])
         
-        # return/save an updated graph after adding the information to the runtime file 
+        result, n, m, example_name, steps = func(*args, **kwargs) # may need to adjust this to handle the differing for each variables time complexity
         
+        # send data to function to save runtime results
+        # overwrites 
+        file = 'runtime.csv'
+        df = pd.read_csv(file)
+        df1 = pd.DataFrame([['Algorithm 1', example_name, n, m, steps]], 
+            columns=['Algorithm Name','Example Name','N','M','Run Time'])
+        
+        df.append(df1).to_csv(file, index=False)
+        # runtime_df = add_to_csv(file="runtime.csv", additions=['Algorithm 1', example_name, n, m, steps])
+        # create an updated graph after adding the information to the runtime file 
         return result 
     return wf
 
