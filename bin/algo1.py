@@ -5,9 +5,6 @@
 # 
 
 
-# NOTE:
-# treat each iteration through hopkroft karp as one step, and each maximal alternating sequence as one step, then add together at the end 
-# ap.array[rows][columns]
 
 import numpy as np
 import copy
@@ -224,9 +221,9 @@ def algorithm_one(X, Y, e, example_name):
 ## example three: (['A','B','C','D'], ['J','K','L'], np.array([0,0,1,0],[1,1,0,0],[0,0,1,1]))
 
 
-print(algorithm_one(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]), example_name="Example One"))
-print(algorithm_one(['A','B','C','D','E','F','G','H'], ['Z','Y','X','W','V','U','T'],
-                 np.array([[1,0,1,0,1,0,0,0], [0,1,0,1,0,1,0,0], [0,1,0,0,1,1,1,0], 
-                          [0,0,1,1,1,1,0,1], [0,0,0,0,0,0,1,0], [0,0,0,0,0,0,0,1], 
-                          [0,0,0,0,0,0,0,1]]), example_name="Example Two"))
-print(algorithm_one(['A','B','C','D'], ['J','K','L'], np.array([[0,0,1,0],[1,1,0,0],[0,0,1,1]]), example_name='Example Three'))
+# print(algorithm_one(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]), example_name="Example One"))
+# print(algorithm_one(['A','B','C','D','E','F','G','H'], ['Z','Y','X','W','V','U','T'],
+#                  np.array([[1,0,1,0,1,0,0,0], [0,1,0,1,0,1,0,0], [0,1,0,0,1,1,1,0], 
+#                           [0,0,1,1,1,1,0,1], [0,0,0,0,0,0,1,0], [0,0,0,0,0,0,0,1], 
+#                           [0,0,0,0,0,0,0,1]]), example_name="Example Two"))
+# print(algorithm_one(['A','B','C','D'], ['J','K','L'], np.array([[0,0,1,0],[1,1,0,0],[0,0,1,1]]), example_name='Example Three'))
