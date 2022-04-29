@@ -5,6 +5,10 @@
 # 
 
 
+# NOTE:
+# treat each iteration through hopkroft karp as one step, and each maximal alternating sequence as one step, then add together at the end 
+# ap.array[rows][columns]
+
 import numpy as np
 import copy
 import itertools
@@ -31,26 +35,20 @@ def hopcroft_karp(X,Y,e):
     matched_x_vertices = []
     
     condition = True
+    step_count = 0
     while condition == True:
         copy_arr = copy.deepcopy(e)
         p = []
-        free_vertices = []
+        free_vertices = [] 
+
         
-        # build free_vertices list
-        for i in range(num_x_vertices):
-            for j in range(num_y_vertices):
-                # find the value in the array for the matching
-                m = copy_arr[i][j]
-                if m == 1: 
-                    if j not in free_vertices:
-                        # add the vertice to free_vertices
-                        free_vertices.append(j)
+        # # build free_vertices list
+        c = np.where(copy_arr == 1)
+        free_vertices.extend(list(np.unique(c[0]))) 
         
-        free_vertices.sort() # sorts the free_vertices according to the original input list Y
-        # BFS on free_vertices 
         for y_vertex in free_vertices:
             if y_vertex not in matched_y_vertices:
-            # look at that row, find the first occurence of 1 
+                # look at that row, find the first occurence of 1 
                 if len(M) == 0:
                     if 1 in copy_arr[y_vertex]:
                         x_index_for_matching_w_y_vertex = copy_arr[y_vertex].tolist().index(1)
@@ -91,15 +89,18 @@ def hopcroft_karp(X,Y,e):
             condition = False
         else:
             condition = True
+            step_count += 1
     
     cleaned_m = [str(X[int(i[-1])] + Y[int(i[0])]) for i in M]
-    # print(cleaned_m)
-    return cleaned_m
+    return cleaned_m, step_count
 
 # print(hopcroft_karp(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]])))
-
-
-def maximal_alternating_sequence(X, Y, e, matchings, verts_to_check, sequences=[]):
+# print(hopcroft_karp(['A','B','C','D','E','F','G','H'], ['Z','Y','X','W','V','U','T'],
+#                  np.array([[1,0,1,0,1,0,0,0], [0,1,0,1,0,1,0,0], [0,1,0,0,1,1,1,0], 
+#                           [0,0,1,1,1,1,0,1], [0,0,0,0,0,0,1,0], [0,0,0,0,0,0,0,1], 
+#                           [0,0,0,0,0,0,0,1]]))) # output ---> ['AZ', 'BY', 'HU', 'EX', 'CW', 'GV']
+# print(hopcroft_karp(['A','B','C','D'], ['J','K','L'], np.array([[0,0,1,0],[1,1,0,0],[0,0,1,1]])))
+def maximal_alternating_sequence(X, Y, e, matchings, step_count, verts_to_check, sequences=[]):
     """_summary_
 
     Args:
@@ -113,7 +114,7 @@ def maximal_alternating_sequence(X, Y, e, matchings, verts_to_check, sequences=[
     Returns:
         max(sequences, key=len) (string): longest string in sequences
     """
-
+    
     e_without_matchings = copy.deepcopy(e)
     for match in matchings:
         # find indices need to remove these edges in e 
@@ -133,33 +134,50 @@ def maximal_alternating_sequence(X, Y, e, matchings, verts_to_check, sequences=[
     else:
         finding  = "X"
     # build sets, start with Y_i given X_0
+    
     for v in verts_to_check:
         if finding == "X":
             connections_to_y = list(locate(e_with_only_matchings[Y.index(v)]))
             # build alternating sequence with each v and  
             if len(connections_to_y) == 0:
                 # no further connections (i.e. termination condition of {})
-                return max(sequences, key=len)
+                return max(sequences, key=len), step_count
             else:
-                sequences = [str(v + "-" + X.index(i)) for i in connections_to_y]
+                s = [str(v + "-" + X[i]) for i in connections_to_y]
+                if len(sequences) != 0:
+                    new_seq = [str(i + j[1:]) for i in sequences for j in s] 
+                else:
+                    new_seq = s
                 # iterate through again with new found vertices
-                new_verts_to_check = [X.index(i) for i in connections_to_y]
-                maximal_alternating_sequence(X, Y, e, matchings, verts_to_check=new_verts_to_check, sequences=sequences)
+                new_verts_to_check = [X[i] for i in connections_to_y]
+                step_count += 1
+                return maximal_alternating_sequence(X, Y, e, matchings, step_count=step_count, verts_to_check=new_verts_to_check, sequences=new_seq)
         else:
             connections_to_x = list(locate(e_without_matchings[:, X.index(v)]))
             if len(connections_to_x) == 0:
                 # no further connections (i.e. termination condition of {})
-                return max(sequences, key=len)
+                return max(sequences, key=len), step_count
             else:
-                sequences = [str(v + "-" + Y.index(i)) for i in connections_to_x]
+                # print([Y.index(Y[i]) for i in connections_to_x])
+                s = [str(v + "-" + Y[i]) for i in connections_to_x]
+                if len(sequences) != 0:
+                    new_seq = [str(i + j[1:]) for i in sequences for j in s]
+                else:
+                    new_seq = s
                 # iterate through again with new found vertices
-                new_verts_to_check = [Y.index(i) for i in connections_to_x]
-                maximal_alternating_sequence(X, Y, e, matchings, verts_to_check=new_verts_to_check,sequences=sequences)
+                new_verts_to_check = [Y[i] for i in connections_to_x]
+                step_count += 1
+                return maximal_alternating_sequence(X, Y, e, matchings, step_count =step_count, verts_to_check=new_verts_to_check, sequences=new_seq)
 
-# maximal_alternating_sequence(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]), matchings=['CF', 'BE', 'AH', 'DG']
+# maximal_alternating_sequence(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]), matchings=['CF', 'BE', 'AH', 'DG'], verts_to_check=[])
+# maximal_alternating_sequence(['A','B','C','D','E','F','G','H'], ['Z','Y','X','W','V','U','T'],
+#                  np.array([[1,0,1,0,1,0,0,0], [0,1,0,1,0,1,0,0], [0,1,0,0,1,1,1,0], 
+#                           [0,0,1,1,1,1,0,1], [0,0,0,0,0,0,1,0], [0,0,0,0,0,0,0,1], 
+#                           [0,0,0,0,0,0,0,1]]), matchings=['AZ', 'BY', 'HU', 'EX', 'CW', 'GV'], verts_to_check=['F','D'])
+# maximal_alternating_sequence(['A','B','C','D'], ['J','K','L'], np.array([[0,0,1,0],[1,1,0,0],[0,0,1,1]]), matchings=['CJ', 'DL', 'AK'], verts_to_check=['B'])
 
 @run_with_time
-def algorithm_one(X, Y, e):
+def algorithm_one(X, Y, e, example_name):
     n_for_tc = min(len(X), len(Y))
     m_for_tc = np.count_nonzero(e == 1)
 
@@ -175,7 +193,7 @@ def algorithm_one(X, Y, e):
             either contained in or not contained in the max alternating sequence
     """
     x_not = []
-    max_card_matching = hopcroft_karp(X,Y,e)
+    max_card_matching, step_count = hopcroft_karp(X,Y,e)
     # print("MCM:", max_card_matching)
     for x in X:
         if x not in [m[0] for m in max_card_matching]:
@@ -188,19 +206,27 @@ def algorithm_one(X, Y, e):
         # then none of the vertices participate in the set as they are all matched
         x_l, y_l, x_s, y_s = X, Y, [], [] 
         
-        return dict({"x_l":x_l, "x_s":x_s, "y_l":y_l, "y_s":y_s}), n_for_tc, m_for_tc, "Algorithm One", "Example One"
+        return dict({"x_l":x_l, "x_s":x_s, "y_l":y_l, "y_s":y_s}), n_for_tc, m_for_tc, "Example One", step_count
         
     else:
         # compute maximal alternating sequence
-        mas = maximal_alternating_sequence(X, Y, e, matchings=max_card_matching, verts_to_check=x_not)
-
+        mas, step_count = maximal_alternating_sequence(X, Y, e, matchings=max_card_matching, step_count=step_count, verts_to_check=x_not)
+        
         x_l, y_l, x_s, y_s = [i for i in X if i not in mas], [j for j in Y if j not in mas], [q for q in X if q in mas], [z for z in Y if z in mas]
-        return dict({"x_l":x_l, "x_s":x_s, "y_l":y_l, "y_s":y_s}), n_for_tc, m_for_tc, "Algorithm One", "Example One"   
+        return dict({"x_l":x_l, "x_s":x_s, "y_l":y_l, "y_s":y_s}), n_for_tc, m_for_tc, example_name, step_count
 
-print(algorithm_one(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]])))
-# example one: (['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]))
-# example two: (['A','B','C','D','E','F','G','H'], ['Z','Y','X','W','V','U','T'],
-#                  np.array([1,0,1,0,1,0,0,0], [0,1,0,1,0,1,0,0], [0,1,0,0,1,1,1,0], 
-#                           [0,0,1,1,1,1,0,1], [0,0,0,0,0,0,1,0], [0,0,0,0,0,0,0,1], 
-#                           [0,0,0,0,0,0,0,1])
+# print(algorithm_one(['A','B','C','D'], ['J','K','L'], np.array([[0,0,1,0],[1,1,0,0],[0,0,1,1]])))
+# # example one: (['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]))
+# # example two: (['A','B','C','D','E','F','G','H'], ['Z','Y','X','W','V','U','T'],
+# #                  np.array([1,0,1,0,1,0,0,0], [0,1,0,1,0,1,0,0], [0,1,0,0,1,1,1,0], 
+# #                           [0,0,1,1,1,1,0,1], [0,0,0,0,0,0,1,0], [0,0,0,0,0,0,0,1], 
+# #                           [0,0,0,0,0,0,0,1])
+## example three: (['A','B','C','D'], ['J','K','L'], np.array([0,0,1,0],[1,1,0,0],[0,0,1,1]))
 
+
+print(algorithm_one(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]), example_name="Example One"))
+print(algorithm_one(['A','B','C','D','E','F','G','H'], ['Z','Y','X','W','V','U','T'],
+                 np.array([[1,0,1,0,1,0,0,0], [0,1,0,1,0,1,0,0], [0,1,0,0,1,1,1,0], 
+                          [0,0,1,1,1,1,0,1], [0,0,0,0,0,0,1,0], [0,0,0,0,0,0,0,1], 
+                          [0,0,0,0,0,0,0,1]]), example_name="Example Two"))
+print(algorithm_one(['A','B','C','D'], ['J','K','L'], np.array([[0,0,1,0],[1,1,0,0],[0,0,1,1]]), example_name='Example Three'))
