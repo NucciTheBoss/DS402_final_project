@@ -2,3 +2,6 @@ Algorithm Name,Example Name,M,N,Run Time
 Algorithm 1,Example One,9,4,2
 Algorithm 1,Example Two,18,7,7
 Algorithm 1,Example Three,5,3,3
+Algorithm 2,Example One,9,4,3
+Algorithm 2,Example Two,18,7,8
+Algorithm 2,Example Three,5,3,4

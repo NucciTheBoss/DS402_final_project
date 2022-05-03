@@ -1,26 +1,25 @@
 import pandas as pd
 import time
 from datetime import datetime
-import seaborn as sns
+# import seaborn as sns
+import math
+from matplotlib import projections, pyplot as plt
+import os
 
-
-# pulls from a dictionary? that contains each functions time complexity and adds 
-# it together at the end to return its actual time complexity
 def run_with_time(func):
     def wf(*args, **kwargs):
         
-        result, n, m, example_name, steps = func(*args, **kwargs) # may need to adjust this to handle the differing for each variables time complexity
+        result, n, m, example_name, steps, algorithm_name = func(*args, **kwargs) # may need to adjust this to handle the differing for each variables time complexity
         
         # send data to function to save runtime results
         # overwrites 
         file = 'runtime.csv'
         df = pd.read_csv(file)
-        df1 = pd.DataFrame([['Algorithm 1', example_name, n, m, steps]], 
+        df1 = pd.DataFrame([[algorithm_name, example_name, n, m, steps]], 
             columns=['Algorithm Name','Example Name','N','M','Run Time'])
         
         df.append(df1).to_csv(file, index=False)
-        # runtime_df = add_to_csv(file="runtime.csv", additions=['Algorithm 1', example_name, n, m, steps])
-        # create an updated graph after adding the information to the runtime file 
+
         return result 
     return wf
 
@@ -57,11 +56,53 @@ def add_to_csv(file, additions):
 
 
 
-def generate_runtime_graph(file, algorithm):
+def generate_runtime_graph(file, algorithm, mode):
     """Generates and saves a graph to compare runtime for algorithm with expected runtime
 
     Args:
         file (_type_): _description_
     """
-    # contains expected/theoretical runtime for each algorithm
-    algo_runtime = {"One":[], "Two":[], "Three":[], "Four":[]}
+    
+    df = pd.read_csv(file) 
+    algo_df = df[df['Algorithm Name'] == algorithm]
+
+    if algorithm == "Algorithm 1" and mode=="Time Complexity":
+        # create a new column of the expected max runtime 
+        algo_df["Time Complexity"] = [algo_df["M"][i]*math.sqrt(algo_df["N"][j]) for i in range(len(algo_df["M"].astype("float32"))) 
+                        for j in range(len(algo_df["N"].astype("float32"))) if i == j]
+    
+    if algorithm == "Algorithm 2" and mode=="Time Complexity":
+        algo_df["Time Complexity"] = [algo_df["M"].values[i]*algo_df["N"].values[j] + algo_df["N"].values[j]**2 * math.log(algo_df["N"].values[j]) 
+                        for j in range(len(algo_df["N"])) for i in range(len(algo_df["M"])) if j == i]
+    # find data necessary for graphing 
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection = '3d')
+
+    x = algo_df['M'].values
+    y = algo_df['N'].values
+    z = algo_df[mode].values
+    # z_2 = algo_df['Run Time']
+
+    ax.set_xlabel("N Value")
+    ax.set_ylabel("M Value")
+    if algorithm == "Algorithm 1":
+        ax.set_zlabel("Number steps")
+    if algorithm == "Algorithm 2":
+        ax.set_zlabel("Number steps")
+
+    ax.scatter(x,y,z, color='red', marker='o')
+
+    for i in range(len(x)):
+        # print(x[i])
+        # annotate the points for easier representation 
+        txt = "({},{},{})".format(x[i], y[i], z[i])
+        ax.text(x[i],y[i],z[i], txt)
+    
+
+    plt.savefig(os.path.join("Graphs", algorithm + mode + "_graph.png"))
+    
+# generate_runtime_graph("runtime.csv", "Algorithm 1","Run Time")
+# # generate_runtime_graph("runtime.csv", "Algorithm 1","Time Complexity")
+# generate_runtime_graph("runtime.csv", "Algorithm 2", "Run Time")
+# # generate_runtime_graph("runtime.csv", "Algorithm 2", "Time Complexity")
+
