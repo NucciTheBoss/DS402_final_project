@@ -1,15 +1,15 @@
-import pandas as pd
-import time
-from datetime import datetime
-# import seaborn as sns
+#!/usr/bin/python3
 import math
-from matplotlib import projections, pyplot as plt
 import os
+
+import pandas as pd
+from matplotlib import pyplot as plt
+
 
 def run_with_time(func):
     def wf(*args, **kwargs):
-        
-        result, n, m, example_name, steps, algorithm_name = func(*args, **kwargs) # may need to adjust this to handle the differing for each variables time complexity
+        # may need to adjust this to handle the differing for each variables time complexity
+        result, n, m, example_name, steps, algorithm_name = func(*args, **kwargs)
         
         # send data to function to save runtime results
         # overwrites 
@@ -44,7 +44,6 @@ def add_to_csv(file, additions):
                 "N":[additions[2]], 
                 "M":[additions[3]],
                 "Run Time":[additions[4]]}
-        # print(df)
         df = pd.DataFrame(new_df)
         df.to_csv(file, index=False)
         # update the file to contain the additions
@@ -81,7 +80,6 @@ def generate_runtime_graph(file, algorithm, mode):
     x = algo_df['M'].values
     y = algo_df['N'].values
     z = algo_df[mode].values
-    # z_2 = algo_df['Run Time']
 
     ax.set_xlabel("N Value")
     ax.set_ylabel("M Value")
@@ -93,7 +91,6 @@ def generate_runtime_graph(file, algorithm, mode):
     ax.scatter(x,y,z, color='red', marker='o')
 
     for i in range(len(x)):
-        # print(x[i])
         # annotate the points for easier representation 
         txt = "({},{},{})".format(x[i], y[i], z[i])
         ax.text(x[i],y[i],z[i], txt)

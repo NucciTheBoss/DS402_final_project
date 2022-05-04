@@ -1,16 +1,11 @@
-# links 
-# https://www.youtube.com/watch?v=lM5eIpF0xjA
-# https://www.youtube.com/watch?v=CSUEVu-qUgM
-# https://www.youtube.com/watch?v=0GNYjXUPTFM
-# 
-
-
+#!/usr/bin/python3
+import copy
 
 import numpy as np
-import copy
-import itertools
-from more_itertools import locate 
+from more_itertools import locate
+
 from utils import run_with_time
+
 
 def hopcroft_karp(X,Y,e):
     """_summary_
@@ -23,8 +18,6 @@ def hopcroft_karp(X,Y,e):
     Returns:
         M (list): list of maximum cardinality matching found
     """
-    num_x_vertices = len(X)
-    num_y_vertices = len(Y)
 
     M = []
 
@@ -211,6 +204,7 @@ def algorithm_one(X, Y, e, example_name=None):
         
         x_l, y_l, x_s, y_s = [i for i in X if i not in mas], [j for j in Y if j not in mas], [q for q in X if q in mas], [z for z in Y if z in mas]
         return dict({"x_l":x_l, "x_s":x_s, "y_l":y_l, "y_s":y_s}), n_for_tc, m_for_tc, example_name, step_count, "Algorithm One"
+
 
 # print(algorithm_one(['A','B','C','D'], ['J','K','L'], np.array([[0,0,1,0],[1,1,0,0],[0,0,1,1]])))
 # # example one: (['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]))
