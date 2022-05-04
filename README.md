@@ -19,6 +19,12 @@ Here information on how to test the code in this repository
 
 ### Algorithms
 
+We have some unit tests written. You can run them by using the following command:
+
+```bash
+python -m unittest test.py
+```
+
 ### Server
 
 You can talk to the server using the command line application `curl`. Here are the example commands that we used:
