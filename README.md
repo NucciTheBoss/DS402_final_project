@@ -11,3 +11,31 @@ This is the list of resources we consulted while developing our implementions of
 * https://www.youtube.com/watch?v=lM5eIpF0xjA
 * https://www.youtube.com/watch?v=CSUEVu-qUgM
 * https://www.youtube.com/watch?v=0GNYjXUPTFM
+
+
+## Testing
+
+Here information on how to test the code in this repository
+
+### Algorithms
+
+### Server
+
+You can talk to the server using the command line application `curl`. Here are the example commands that we used:
+
+
+**Algorithm 1**
+```bash
+curl --header "Content-Type: application/json" \
+  --request GET \
+  --data '{"0": {"name": "A", "preferences": "X->Y->Z"},"1": {"name": "B", "preferences": "W->Y->Z"},"2": {"name": "C", "preferences": "Z->X->W"}}' \
+  http://127.0.0.1:5000/algo1
+```
+
+**Algorithm 2**
+```bash
+curl --header "Content-Type: application/json" \
+  --request GET \
+  --data '{"0": {"name": "A", "preferences": "X->Y->Z"},"1": {"name": "B", "preferences": "W->Y->Z"},"2": {"name": "C", "preferences": "Z->X->W"}}' \
+  http://127.0.0.1:5000/algo2
+```

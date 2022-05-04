@@ -1,0 +1,30 @@
+Algorithm Name,Example Name,M,N,Run Time
+Algorithm One,Server Test,9,3,1
+Algorithm One,,9,3,1
+Algorithm One,,9,4,2
+Algorithm One,Server Test,9,3,1
+Algorithm One,,9,4,2
+Algorithm One,,9,4,2
+Algorithm One,,9,4,2
+Algorithm One,,9,4,2
+Algorithm One,,9,4,2
+Algorithm One,,9,4,2
+Algorithm One,,9,4,2
+Algorithm One,,9,4,2
+Algorithm One,,9,4,2
+Algorithm One,Server Test,9,3,1
+Algorithm One,Server Test,9,3,1
+Algorithm One,,9,4,2
+Algorithm One,,9,4,2
+Algorithm One,,9,4,2
+Algorithm One,,9,4,2
+Algorithm One,Server Test,9,3,1
+Algorithm One,Server Test,9,3,1
+Algorithm One,Server Test,9,3,1
+Algorithm Two,Test 2,9,4,3
+Algorithm Two,Test 2,9,4,3
+Algorithm One,,9,3,1
+Algorithm One,,9,3,1
+Algorithm One,,9,3,1
+Algorithm One,,9,3,1
+Algorithm Two,Server Test,9,3,2

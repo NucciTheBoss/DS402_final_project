@@ -4,7 +4,7 @@ import copy
 import numpy as np
 from more_itertools import locate
 
-from utils import run_with_time
+from .utils import run_with_time
 
 
 def hopcroft_karp(X,Y,e):
@@ -196,14 +196,14 @@ def algorithm_one(X, Y, e, example_name=None):
         # then none of the vertices participate in the set as they are all matched
         x_l, y_l, x_s, y_s = X, Y, [], [] 
         
-        return dict({"x_l":x_l, "x_s":x_s, "y_l":y_l, "y_s":y_s}), n_for_tc, m_for_tc, example_name, step_count, "Algorithm One"
+        return {"x_l":x_l, "x_s":x_s, "y_l":y_l, "y_s":y_s}, n_for_tc, m_for_tc, example_name, step_count, "Algorithm One"
         
     else:
         # compute maximal alternating sequence
         mas, step_count = maximal_alternating_sequence(X, Y, e, matchings=max_card_matching, step_count=step_count, verts_to_check=x_not)
         
         x_l, y_l, x_s, y_s = [i for i in X if i not in mas], [j for j in Y if j not in mas], [q for q in X if q in mas], [z for z in Y if z in mas]
-        return dict({"x_l":x_l, "x_s":x_s, "y_l":y_l, "y_s":y_s}), n_for_tc, m_for_tc, example_name, step_count, "Algorithm One"
+        return {"x_l":x_l, "x_s":x_s, "y_l":y_l, "y_s":y_s}, n_for_tc, m_for_tc, example_name, step_count, "Algorithm One"
 
 
 # print(algorithm_one(['A','B','C','D'], ['J','K','L'], np.array([[0,0,1,0],[1,1,0,0],[0,0,1,1]])))

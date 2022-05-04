@@ -20,7 +20,7 @@ def run_with_time(func):
         
         df.append(df1).to_csv(file, index=False)
 
-        return result 
+        return result, n, m, example_name, steps, algorithm_name 
     return wf
 
 
