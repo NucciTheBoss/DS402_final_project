@@ -84,12 +84,7 @@ def hopcroft_karp(X,Y,e):
     cleaned_m = [str(X[int(i[-1])] + Y[int(i[0])]) for i in M]
     return cleaned_m, step_count
 
-# print(hopcroft_karp(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]])))
-# print(hopcroft_karp(['A','B','C','D','E','F','G','H'], ['Z','Y','X','W','V','U','T'],
-#                  np.array([[1,0,1,0,1,0,0,0], [0,1,0,1,0,1,0,0], [0,1,0,0,1,1,1,0], 
-#                           [0,0,1,1,1,1,0,1], [0,0,0,0,0,0,1,0], [0,0,0,0,0,0,0,1], 
-#                           [0,0,0,0,0,0,0,1]]))) # output ---> ['AZ', 'BY', 'HU', 'EX', 'CW', 'GV']
-# print(hopcroft_karp(['A','B','C','D'], ['J','K','L'], np.array([[0,0,1,0],[1,1,0,0],[0,0,1,1]])))
+
 def maximal_alternating_sequence(X, Y, e, matchings, step_count, verts_to_check, sequences=[]):
     """_summary_
 
@@ -123,8 +118,8 @@ def maximal_alternating_sequence(X, Y, e, matchings, step_count, verts_to_check,
         finding = "Y"
     else:
         finding  = "X"
+
     # build sets, start with Y_i given X_0
-    
     for v in verts_to_check:
         if finding == "X":
             connections_to_y = list(locate(e_with_only_matchings[Y.index(v)]))
@@ -158,19 +153,10 @@ def maximal_alternating_sequence(X, Y, e, matchings, step_count, verts_to_check,
                 step_count += 1
                 return maximal_alternating_sequence(X, Y, e, matchings, step_count =step_count, verts_to_check=new_verts_to_check, sequences=new_seq)
 
-# maximal_alternating_sequence(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]), matchings=['CF', 'BE', 'AH', 'DG'], verts_to_check=[])
-# maximal_alternating_sequence(['A','B','C','D','E','F','G','H'], ['Z','Y','X','W','V','U','T'],
-#                  np.array([[1,0,1,0,1,0,0,0], [0,1,0,1,0,1,0,0], [0,1,0,0,1,1,1,0], 
-#                           [0,0,1,1,1,1,0,1], [0,0,0,0,0,0,1,0], [0,0,0,0,0,0,0,1], 
-#                           [0,0,0,0,0,0,0,1]]), matchings=['AZ', 'BY', 'HU', 'EX', 'CW', 'GV'], verts_to_check=['F','D'])
-# maximal_alternating_sequence(['A','B','C','D'], ['J','K','L'], np.array([[0,0,1,0],[1,1,0,0],[0,0,1,1]]), matchings=['CJ', 'DL', 'AK'], verts_to_check=['B'])
 
 @run_with_time
 def algorithm_one(X, Y, e, example_name=None):
-    n_for_tc = min(len(X), len(Y))
-    m_for_tc = np.count_nonzero(e == 1)
-
-    """_summary_
+    """Our implementation of algorithm 1.
 
     Args:
         x (list): x components of bipartite graph (G)
@@ -181,6 +167,9 @@ def algorithm_one(X, Y, e, example_name=None):
         dict({"x_l":x_l, "x_s":x_s, "y_l":y_l, "y_s":y_s}) (dict): dict of lists and the name of that list of vertices 
             either contained in or not contained in the max alternating sequence
     """
+    n_for_tc = min(len(X), len(Y))
+    m_for_tc = np.count_nonzero(e == 1)
+
     x_not = []
     max_card_matching, step_count = hopcroft_karp(X,Y,e)
     for x in X:
@@ -202,20 +191,3 @@ def algorithm_one(X, Y, e, example_name=None):
         
         x_l, y_l, x_s, y_s = [i for i in X if i not in mas], [j for j in Y if j not in mas], [q for q in X if q in mas], [z for z in Y if z in mas]
         return {"x_l":x_l, "x_s":x_s, "y_l":y_l, "y_s":y_s}, n_for_tc, m_for_tc, example_name, step_count, "Algorithm One"
-
-
-# print(algorithm_one(['A','B','C','D'], ['J','K','L'], np.array([[0,0,1,0],[1,1,0,0],[0,0,1,1]])))
-# # example one: (['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]))
-# # example two: (['A','B','C','D','E','F','G','H'], ['Z','Y','X','W','V','U','T'],
-# #                  np.array([1,0,1,0,1,0,0,0], [0,1,0,1,0,1,0,0], [0,1,0,0,1,1,1,0], 
-# #                           [0,0,1,1,1,1,0,1], [0,0,0,0,0,0,1,0], [0,0,0,0,0,0,0,1], 
-# #                           [0,0,0,0,0,0,0,1])
-## example three: (['A','B','C','D'], ['J','K','L'], np.array([0,0,1,0],[1,1,0,0],[0,0,1,1]))
-
-
-# print(algorithm_one(['A','B','C','D'], ['E','F','G','H'], np.array([[1,1,0,1], [1,0,1,1], [0,0,0,1], [1,0,0,1]]), example_name="Example One"))
-# print(algorithm_one(['A','B','C','D','E','F','G','H'], ['Z','Y','X','W','V','U','T'],
-#                  np.array([[1,0,1,0,1,0,0,0], [0,1,0,1,0,1,0,0], [0,1,0,0,1,1,1,0], 
-#                           [0,0,1,1,1,1,0,1], [0,0,0,0,0,0,1,0], [0,0,0,0,0,0,0,1], 
-#                           [0,0,0,0,0,0,0,1]]), example_name="Example Two"))
-# print(algorithm_one(['A','B','C','D'], ['J','K','L'], np.array([[0,0,1,0],[1,1,0,0],[0,0,1,1]]), example_name='Example Three'))
