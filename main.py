@@ -62,7 +62,7 @@ def algo1_response():
     if request.method == "GET":
         data = request.get_json()
         pref = _parse(data)
-        print(algorithm_one(pref[0], pref[1], pref[2], "Server Test"))
+        algorithm_one(pref[0], pref[1], pref[2], "Server Test")
     
     return jsonify({"status": "200"})
     

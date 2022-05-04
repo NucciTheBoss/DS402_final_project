@@ -148,7 +148,6 @@ def maximal_alternating_sequence(X, Y, e, matchings, step_count, verts_to_check,
                 # no further connections (i.e. termination condition of {})
                 return max(sequences, key=len), step_count
             else:
-                # print([Y.index(Y[i]) for i in connections_to_x])
                 s = [str(v + "-" + Y[i]) for i in connections_to_x]
                 if len(sequences) != 0:
                     new_seq = [str(i + j[1:]) for i in sequences for j in s]
@@ -184,7 +183,6 @@ def algorithm_one(X, Y, e, example_name=None):
     """
     x_not = []
     max_card_matching, step_count = hopcroft_karp(X,Y,e)
-    # print("MCM:", max_card_matching)
     for x in X:
         if x not in [m[0] for m in max_card_matching]:
             x_not.append(x)

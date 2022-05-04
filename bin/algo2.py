@@ -7,9 +7,7 @@ def algorithm_two(X,Y, e, example_name=None):
     # use algo1 and hopcroft_karp output to calculate M[x_l, y_l]
     
     matchings, _ = hopcroft_karp(X,Y,e)
-    print(algorithm_one(X,Y,e))
     subset_dict, n_for_tc, m_for_tc, _, step_count, _ = algorithm_one(X,Y,e)
-    print(subset_dict, type(subset_dict))
     x_l, y_l = subset_dict["x_l"], subset_dict["y_l"]
     
     # filter matchings based on them containing vertices in x_l and y_l 
